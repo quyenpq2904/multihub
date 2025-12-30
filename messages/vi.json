@@ -1,0 +1,33 @@
+{
+  "HomePage": {
+    "title": "Trang chủ",
+    "description": "Trang chủ nè"
+  },
+  "NavBar": {
+    "home": "Trang chủ",
+    "messenger": "Messenger",
+    "sketchroom": "Sketchroom",
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "signedInAs": "Đăng nhập với",
+    "sections": {
+      "account": "Tài khoản"
+    },
+    "settings": "Cài đặt",
+    "logOut": "Đăng xuất"
+  },
+  "SignIn": {
+    "title": "Chào mừng trở lại",
+    "description": "Đăng nhập để tiếp tục",
+    "emailAddress": "Địa chỉ email",
+    "password": "Mật khẩu",
+    "rememberMe": "Ghi nhớ đăng nhập",
+    "forgotPassword": "Quên mật khẩu?",
+    "signIn": "Đăng nhập",
+    "or": "HOẶC",
+    "continueWithGoogle": "Tiếp tục với Google",
+    "continueWithGithub": "Tiếp tục với Github",
+    "needToCreateAnAccount": "Bạn cần tạo tài khoản?",
+    "signUp": "Đăng ký"
+  }
+}

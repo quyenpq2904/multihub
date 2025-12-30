@@ -1,0 +1,33 @@
+{
+  "HomePage": {
+    "title": "Home Page",
+    "description": "This is homepage"
+  },
+  "NavBar": {
+    "home": "Home",
+    "messenger": "Messenger",
+    "sketchroom": "Sketchroom",
+    "login": "Login",
+    "register": "Register",
+    "signedInAs": "Signed in as",
+    "sections": {
+      "account": "Account"
+    },
+    "settings": "Settings",
+    "logOut": "Log Out"
+  },
+  "SignIn": {
+    "title": "Welcome Back",
+    "description": "Log in to your account to continue",
+    "emailAddress": "Email Address",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "signIn": "Sign In",
+    "or": "OR",
+    "continueWithGoogle": "Continue with Google",
+    "continueWithGithub": "Continue with Github",
+    "needToCreateAnAccount": "Need to create an account?",
+    "signUp": "Sign Up"
+  }
+}

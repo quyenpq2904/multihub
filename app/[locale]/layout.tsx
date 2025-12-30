@@ -1,11 +1,12 @@
 import { Locale, NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Metadata } from "next";
 import "@/app/globals.css";
 import ThemeProvider from "@/lib/providers/ThemeProvider";
 import QueryProvider from "@/lib/providers/QueryProvider";
-import { Metadata } from "next";
 import { AuthProvider } from "@/lib/contexts/AuthContext";
+import { SocketProvider } from "@/lib/contexts/SocketContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,7 +46,9 @@ export default async function LocaleLayout({
         <QueryProvider>
           <ThemeProvider>
             <NextIntlClientProvider locale={locale} messages={messages}>
-              <AuthProvider>{children}</AuthProvider>
+              <SocketProvider>
+                <AuthProvider>{children}</AuthProvider>
+              </SocketProvider>
             </NextIntlClientProvider>
           </ThemeProvider>
         </QueryProvider>

@@ -24,7 +24,7 @@ const LanguageChanger = () => {
     <Dropdown placement="bottom-end">
       <DropdownTrigger>
         <Button
-          variant="light"
+          variant="bordered"
           radius="full"
           className="min-w-fit w-10 px-0 sm:min-w-fit sm:w-auto sm:px-3"
         >

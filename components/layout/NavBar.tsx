@@ -21,11 +21,13 @@ import LanguageChanger from "../LanguageChanger";
 import dynamic from "next/dynamic";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { useAuth } from "@/lib/contexts/AuthContext";
+import { usePathname } from "next/navigation";
 
 const ThemeChanger = dynamic(() => import("../ThemeChanger"), { ssr: false });
 
 export default function NavBar(props: NavbarProps) {
   const t = useTranslations("NavBar");
+  const pathname = usePathname();
   const { logout } = useAuth();
   const { data: profile, isLoading } = useProfile();
 
@@ -44,24 +46,43 @@ export default function NavBar(props: NavbarProps) {
     },
   ];
 
-  return (
-    <Navbar {...props} height="60px">
-      <NavbarBrand>
-        <span className="text-small ml-2 font-medium">ACME</span>
-      </NavbarBrand>
+  const checkIsActive = (href: string) => {
+    if (href === "/" || href === "#") return pathname === "/";
+    return pathname.startsWith(href);
+  };
 
+  return (
+    <Navbar
+      {...props}
+      height="70px"
+      maxWidth="xl"
+      className="border-b border-default-500"
+    >
       <NavbarContent justify="center">
-        {navItems.map((item) => (
-          <NavbarItem key={item.href}>
-            <Link as={I18nLink} href={item.href} size="sm">
-              {item.label}
-            </Link>
-          </NavbarItem>
-        ))}
+        <NavbarBrand>
+          <span className="mr-5 font-medium">MULTIHUB</span>
+        </NavbarBrand>
+        {navItems.map((item) => {
+          const isActive = checkIsActive(item.href);
+          return (
+            <NavbarItem key={item.href}>
+              <Link
+                as={I18nLink}
+                href={item.href}
+                aria-current={isActive ? "page" : undefined}
+                className={`text-foreground hover:text-primary ${
+                  isActive ? "font-bold" : ""
+                }`}
+              >
+                {item.label}
+              </Link>
+            </NavbarItem>
+          );
+        })}
       </NavbarContent>
 
       <NavbarContent justify="end">
-        <NavbarItem className="ml-2 flex! gap- items-center">
+        <NavbarItem className="ml-2 flex! gap-3 items-center">
           <ThemeChanger />
           <LanguageChanger />
           {!isLoading && profile ? (

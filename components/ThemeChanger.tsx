@@ -10,7 +10,7 @@ const ThemeChanger = () => {
   return (
     <Button
       onPress={() => setTheme(theme === "dark" ? "light" : "dark")}
-      variant="light"
+      variant="bordered"
       radius="full"
       isIconOnly
     >

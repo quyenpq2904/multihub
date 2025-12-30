@@ -29,6 +29,21 @@ export default function NavBar(props: NavbarProps) {
   const { logout } = useAuth();
   const { data: profile, isLoading } = useProfile();
 
+  const navItems = [
+    {
+      label: t("home"),
+      href: "/",
+    },
+    {
+      label: t("messenger"),
+      href: "/messenger",
+    },
+    {
+      label: t("sketchroom"),
+      href: "/sketchroom",
+    },
+  ];
+
   return (
     <Navbar {...props} height="60px">
       <NavbarBrand>
@@ -36,32 +51,13 @@ export default function NavBar(props: NavbarProps) {
       </NavbarBrand>
 
       <NavbarContent justify="center">
-        <NavbarItem>
-          <Link as={I18nLink} href="#" size="sm">
-            {t("home")}
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link as={I18nLink} href="#" size="sm">
-            {t("features")}
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link
-            aria-current="page"
-            color="foreground"
-            as={I18nLink}
-            href="#"
-            size="sm"
-          >
-            {t("customers")}
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link as={I18nLink} href="#" size="sm">
-            {t("about")}
-          </Link>
-        </NavbarItem>
+        {navItems.map((item) => (
+          <NavbarItem key={item.href}>
+            <Link as={I18nLink} href={item.href} size="sm">
+              {item.label}
+            </Link>
+          </NavbarItem>
+        ))}
       </NavbarContent>
 
       <NavbarContent justify="end">

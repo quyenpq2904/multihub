@@ -1,20 +1,53 @@
 import http from "../../lib/utils/http";
-import { IChatResponse, IGetMessagesResponse } from "./chats.type";
+import {
+  IGetChatsRequest,
+  IGetMessagesRequest,
+  IAddMemberRequest,
+} from "./chat-req.type";
+import { IChatsResponse, IGetMessagesResponse } from "./chat-res.type";
+import { IChat } from "@/types/Chat";
 
 const BaseURL = "chats";
 
 const chatsApi = {
-  getChats() {
-    return http.get<IChatResponse[]>(`${BaseURL}`);
+  getChats({ afterCursor, beforeCursor, limit = 20 }: IGetChatsRequest) {
+    return http.get<IChatsResponse>(`${BaseURL}`, {
+      params: { afterCursor, beforeCursor, limit },
+    });
   },
 
-  getMessages(conversationId: string, limit: number = 20, cursor?: string) {
-    const params: any = { limit };
-    if (cursor) params.cursor = cursor;
+  getMessages({
+    conversationId,
+    limit = 20,
+    afterCursor,
+    beforeCursor,
+  }: IGetMessagesRequest) {
     return http.get<IGetMessagesResponse>(
       `${BaseURL}/${conversationId}/messages`,
-      { params }
+      {
+        params: { limit, afterCursor, beforeCursor },
+      }
     );
+  },
+
+  createConversation(users: string[]) {
+    return http.post<IChat>(`${BaseURL}`, { users });
+  },
+
+  getConversation(id: string) {
+    return http.get<IChat>(`${BaseURL}/${id}`);
+  },
+
+  addMember(data: IAddMemberRequest) {
+    return http.post(`${BaseURL}/add-member`, data);
+  },
+
+  updateConversation(data: FormData) {
+    return http.patch(`${BaseURL}`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   },
 };
 

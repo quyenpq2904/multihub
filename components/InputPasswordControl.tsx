@@ -25,7 +25,7 @@ const InputPasswordControl = <T extends FieldValues>({
       {...register(name)}
       type={isVisible ? "text" : "password"}
       endContent={
-        <button type="button" onClick={toggleVisibility}>
+        <button type="button" tabIndex={-1} onClick={toggleVisibility}>
           {isVisible ? (
             <Icon
               className="text-default-400 pointer-events-none text-2xl"

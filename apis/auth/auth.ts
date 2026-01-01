@@ -4,7 +4,11 @@ import {
   IRefreshTokenRequest,
   ISignUpRequest,
 } from "./auth-req.type";
-import { ILoginResponse, IRefreshTokenResponse } from "./auth-res.type";
+import {
+  ILoginResponse,
+  IRefreshTokenResponse,
+  ISignUpResponse,
+} from "./auth-res.type";
 
 const BaseURL = "auth";
 
@@ -14,7 +18,7 @@ const authApi = {
   },
 
   signUp(data: ISignUpRequest) {
-    return http.post<ILoginResponse>(`${BaseURL}/register`, data);
+    return http.post<ISignUpResponse>(`${BaseURL}/register`, data);
   },
 
   refreshToken(data: IRefreshTokenRequest) {

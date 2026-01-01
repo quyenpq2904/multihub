@@ -8,4 +8,8 @@ interface ILoginResponse {
 interface IRefreshTokenResponse
   extends Pick<ILoginResponse, "accessToken" | "refreshToken"> {}
 
-export type { ILoginResponse, IRefreshTokenResponse };
+interface ISignUpResponse {
+  userId: string;
+}
+
+export type { ILoginResponse, IRefreshTokenResponse, ISignUpResponse };

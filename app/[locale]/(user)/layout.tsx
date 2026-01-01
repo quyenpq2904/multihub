@@ -1,4 +1,9 @@
+"use client";
+
 import NavBar from "@/components/layout/NavBar";
+import { useRouter } from "@/i18n/navigation";
+import { useProfile } from "@/lib/hooks/useProfile";
+import React from "react";
 
 export default function UserLayout({
   children,

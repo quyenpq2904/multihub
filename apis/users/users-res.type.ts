@@ -1,6 +1,11 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
 import { IUser } from "@/types/User";
+import { ICursorPagination } from "../chats/chat-res.type";
 
-interface IGetMe extends IUser {}
+export interface IGetMe {
+  data: IUser; // Assuming generic structure wrapper or direct
+}
 
-export type { IGetMe };
+export interface ISearchUsersResponse {
+  data: IUser[];
+  pagination: ICursorPagination;
+}

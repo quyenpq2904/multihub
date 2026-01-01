@@ -7,98 +7,66 @@ import {
   Card,
   Input,
   ScrollShadow,
+  useDisclosure,
 } from "@heroui/react";
+import CreateChatModal from "./CreateChatModal";
 import { Icon } from "@iconify/react";
-import { ChatUI } from "../message.types";
-import { IGetMe } from "@/apis/users/users-res.type";
+import { useTranslations } from "next-intl";
+import { IChat } from "@/types/Chat";
+import { useProfile } from "@/lib/hooks/useProfile";
 
 interface ChatListProps {
-  chats: ChatUI[];
-  selectedChatId: string | null;
-  currentUser: IGetMe | null;
-  onSelectChat: (id: string) => void;
+  chats: IChat[] | undefined;
+  selectedChat: IChat | null;
+  onSelectChat: (chat: IChat) => void;
 }
 
 export default function ChatList({
   chats,
-  selectedChatId,
-  currentUser,
+  selectedChat,
   onSelectChat,
 }: ChatListProps) {
-  const getChatName = (chat: ChatUI) => {
-    if (chat.type === "GROUP") return chat.name || "Group Chat";
-    if (!currentUser) return chat.name;
-    const other = chat.participants.find((p) => p.id !== currentUser.id);
-    return other ? other.fullName : "Unknown User";
-  };
+  const { data: profile } = useProfile();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const t = useTranslations("Messenger");
 
-  const getChatAvatar = (chat: ChatUI) => {
-    if (chat.type === "GROUP") return chat.avatar;
-    if (!currentUser) return chat.avatar;
-    const other = chat.participants.find((p) => p.id !== currentUser.id);
-    return other ? other.avatar : "";
-  };
-
-  const renderListAvatar = (chat: ChatUI) => {
-    const avatarUrl = getChatAvatar(chat);
-
-    if (chat.name === "System Notifications") {
-      return (
-        <div className="w-12 h-12 rounded-full bg-warning/20 flex items-center justify-center text-warning">
-          <Icon icon="solar:bell-bing-bold" className="text-2xl" />
-        </div>
-      );
-    }
-
+  const getChatName = (chat: IChat) => {
     if (chat.type === "GROUP") {
-      return (
-        <Badge
-          content=""
-          color="success"
-          shape="circle"
-          placement="bottom-right"
-          isInvisible={!chat.isOnline}
-          className="border-2 border-background ring-0"
-        >
-          <Avatar
-            src={avatarUrl}
-            size="lg"
-            className="rounded-full"
-            fallback={
-              <Icon
-                icon="solar:users-group-rounded-bold"
-                className="text-2xl"
-              />
-            }
-          />
-        </Badge>
-      );
-    }
+      if (chat.name) return chat.name;
 
-    return (
-      <Badge
-        content=""
-        color="success"
-        shape="circle"
-        placement="bottom-right"
-        isInvisible={!chat.isOnline}
-        className="border-2 border-background ring-0"
-      >
-        <Avatar src={avatarUrl} size="lg" />
-      </Badge>
-    );
+      const members = chat.participants.filter((p) => p.id !== profile?.id);
+      const names = members.map(
+        (m) => m.fullName.trim().split(" ").pop() || m.fullName
+      );
+
+      if (names.length === 0) return t("emptyGroup");
+      if (names.length <= 2) return names.join(", ");
+
+      return `${names[0]}, ${names[1]} ${t("others", {
+        count: names.length - 2,
+      })}`;
+    }
+    return chat.participants.find((p) => p.id !== profile?.id)?.fullName;
+  };
+
+  const getChatAvatar = (chat: IChat) => {
+    if (chat.type === "GROUP") {
+      return chat.avatar;
+    }
+    return chat.participants.find((p) => p.id !== profile?.id)?.avatar;
   };
 
   return (
     <Card className="w-[420px] flex flex-col border-none shrink-0" shadow="sm">
       <div className="p-4 flex flex-col gap-4">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Chats</h1>
+          <h1 className="text-2xl font-bold">{t("chats")}</h1>
           <Button
             isIconOnly
             radius="full"
             variant="light"
             className="bg-default-100"
+            onPress={onOpen}
           >
             <Icon
               icon="solar:pen-new-square-bold"
@@ -108,7 +76,7 @@ export default function ChatList({
         </div>
 
         <Input
-          placeholder="Search Messenger"
+          placeholder={t("searchMessenger")}
           radius="full"
           classNames={{
             inputWrapper:
@@ -126,53 +94,43 @@ export default function ChatList({
 
       <ScrollShadow className="flex-1 w-full">
         <div className="px-2">
-          {chats.map((chat) => (
+          {chats?.map((chat) => (
             <div
               key={chat.id}
-              onClick={() => onSelectChat(chat.id)}
+              onClick={() => onSelectChat(chat)}
               className={`flex gap-3 p-3 rounded-lg cursor-pointer transition-colors ${
-                selectedChatId === chat.id
+                selectedChat?.id === chat.id
                   ? "bg-default-100"
                   : "hover:bg-default-50"
               }`}
             >
-              <div className="shrink-0">{renderListAvatar(chat)}</div>
+              <div className="shrink-0">
+                <Badge
+                  content=""
+                  color="success"
+                  shape="circle"
+                  placement="bottom-right"
+                  className="border-2 border-background ring-0"
+                >
+                  <Avatar src={getChatAvatar(chat)} size="lg" />
+                </Badge>
+              </div>
 
               <div className="flex-1 min-w-0 flex flex-col justify-center gap-0.5">
                 <div className="flex justify-between items-baseline">
-                  <span
-                    className={`font-medium truncate ${
-                      (chat.unreadCount || 0) > 0
-                        ? "text-foreground"
-                        : "text-foreground/90"
-                    }`}
-                  >
-                    {getChatName(chat)}
-                  </span>
+                  <span className="font-semibold">{getChatName(chat)}</span>
                 </div>
                 <div className="flex gap-2 items-center text-sm text-default-500">
-                  <span
-                    className={`truncate max-w-[180px] ${
-                      (chat.unreadCount || 0) > 0
-                        ? "font-bold text-foreground"
-                        : ""
-                    }`}
-                  >
-                    {chat.lastMessage}
-                  </span>
-                  <span className="text-xs shrink-0">• {chat.lastActive}</span>
+                  <span>Ahihi</span>
+                  <span className="text-xs shrink-0">• 2m ago</span>
                 </div>
               </div>
-
-              {(chat.unreadCount || 0) > 0 && (
-                <div className="shrink-0 flex items-center justify-center">
-                  <div className="w-3 h-3 rounded-full bg-primary" />
-                </div>
-              )}
             </div>
           ))}
         </div>
       </ScrollShadow>
+
+      <CreateChatModal isOpen={isOpen} onOpenChange={onOpenChange} />
     </Card>
   );
 }

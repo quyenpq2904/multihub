@@ -48,6 +48,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(false);
   }, [queryClient]);
 
+  useEffect(() => {
+    if (!tokens) {
+      queryClient.clear();
+    }
+  }, [tokens, queryClient]);
+
   const login = useCallback(
     (newTokens: Tokens) => {
       setTokenToLS(newTokens);

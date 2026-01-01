@@ -11,7 +11,7 @@ export interface ClientToServerEvents {
   leaveRoom: (roomId: string) => void;
 }
 
-const URL = "http://localhost:3000";
+const URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
   URL,

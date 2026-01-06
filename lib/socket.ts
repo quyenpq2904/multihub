@@ -1,4 +1,4 @@
-import { IMessage } from "@/apis/chats/chats.type";
+import { IMessage } from "@/types/Chat";
 import { io, Socket } from "socket.io-client";
 
 export interface ServerToClientEvents {

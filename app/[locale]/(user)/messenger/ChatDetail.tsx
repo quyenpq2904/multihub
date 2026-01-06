@@ -160,12 +160,12 @@ export default function ChatDetail({ chat }: ChatDetailProps) {
     }
 
     if (isConnected && chat.id) {
-      socket?.emit("joinRoom", chat.id);
+      socket?.emit("join-room", chat.id);
       socket?.on("message", onMessage);
     }
     return () => {
       if (isConnected && chat.id) {
-        socket?.emit("leaveRoom", chat.id);
+        socket?.emit("leave-room", chat.id);
         socket?.off("message", onMessage);
       }
     };
@@ -186,7 +186,7 @@ export default function ChatDetail({ chat }: ChatDetailProps) {
 
     setMessages((prev) => [...prev, optimisticMessage]);
 
-    socket.emit("sendMessage", optimisticMessage);
+    socket.emit("send-message", optimisticMessage);
 
     setInputValue("");
   };

@@ -16,6 +16,7 @@ import { useProfile } from "@/lib/hooks/useProfile";
 import { useQuery } from "@tanstack/react-query";
 import chatsApi from "@/apis/chats/chats";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { useDisclosure } from "@heroui/react";
 import AddMemberModal from "./AddMemberModal";
 import RenameChatModal from "./RenameChatModal";
@@ -31,6 +32,7 @@ export default function ChatDetail({ chat }: ChatDetailProps) {
   const { data: profile } = useProfile();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const t = useTranslations("Messenger");
+  const router = useRouter();
 
   const { socket, isConnected } = useSocket();
 
@@ -222,6 +224,21 @@ export default function ChatDetail({ chat }: ChatDetailProps) {
       return chat.avatar;
     }
     return chat.participants.find((p) => p.id !== profile?.id)?.avatar;
+  };
+
+  const isAdmin = useMemo(() => {
+    return (
+      chat.participants.find((p) => p.id === profile?.id)?.role === "ADMIN"
+    );
+  }, [chat.participants, profile?.id]);
+
+  const handleRemoveMember = async (memberId: string) => {
+    try {
+      await chatsApi.removeMember({ conversationId: chat.id, memberId });
+      router.refresh();
+    } catch (error) {
+      console.error("Failed to remove member", error);
+    }
   };
 
   return (
@@ -487,7 +504,7 @@ export default function ChatDetail({ chat }: ChatDetailProps) {
                         className="flex items-center gap-3 py-2"
                       >
                         <Avatar src={member.avatar} name={member.fullName} />
-                        <div className="flex flex-col min-w-0">
+                        <div className="flex flex-col min-w-0 flex-1">
                           <span className="text-sm font-medium truncate">
                             {member.fullName}
                           </span>
@@ -497,6 +514,20 @@ export default function ChatDetail({ chat }: ChatDetailProps) {
                             </span>
                           )}
                         </div>
+                        {isAdmin && member.id !== profile?.id && (
+                          <Button
+                            isIconOnly
+                            size="sm"
+                            variant="light"
+                            color="danger"
+                            onPress={() => handleRemoveMember(member.id)}
+                          >
+                            <Icon
+                              icon="solar:trash-bin-trash-bold"
+                              className="text-lg"
+                            />
+                          </Button>
+                        )}
                       </div>
                     ))}
                   </div>

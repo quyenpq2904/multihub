@@ -3,6 +3,7 @@ import {
   IGetChatsRequest,
   IGetMessagesRequest,
   IAddMemberRequest,
+  IRemoveMemberRequest,
 } from "./chat-req.type";
 import { IChatsResponse, IGetMessagesResponse } from "./chat-res.type";
 import { IChat } from "@/types/Chat";
@@ -40,6 +41,10 @@ const chatsApi = {
 
   addMember(data: IAddMemberRequest) {
     return http.post(`${BaseURL}/add-member`, data);
+  },
+
+  removeMember(data: IRemoveMemberRequest) {
+    return http.post(`${BaseURL}/remove-member`, data);
   },
 
   updateConversation(data: FormData) {

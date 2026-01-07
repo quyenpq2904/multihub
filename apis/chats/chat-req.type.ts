@@ -15,3 +15,8 @@ export interface IAddMemberRequest {
   conversationId: string;
   memberId: string;
 }
+
+export interface IRemoveMemberRequest {
+  conversationId: string;
+  memberId: string;
+}

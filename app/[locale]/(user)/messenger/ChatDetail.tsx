@@ -21,6 +21,7 @@ import { useDisclosure } from "@heroui/react";
 import AddMemberModal from "./AddMemberModal";
 import RenameChatModal from "./RenameChatModal";
 import ChangePhotoModal from "./ChangePhotoModal";
+import MuteChatModal from "./MuteChatModal";
 
 interface ChatDetailProps {
   chat: IChat;
@@ -57,6 +58,11 @@ export default function ChatDetail({ chat }: ChatDetailProps) {
     isOpen: isPhotoOpen,
     onOpen: onPhotoOpen,
     onOpenChange: onPhotoOpenChange,
+  } = useDisclosure();
+  const {
+    isOpen: isMuteOpen,
+    onOpen: onMuteOpen,
+    onOpenChange: onMuteOpenChange,
   } = useDisclosure();
 
   useEffect(() => {
@@ -485,6 +491,21 @@ export default function ChatDetail({ chat }: ChatDetailProps) {
                       {t("changePhoto")}
                     </span>
                   </div>
+
+                  <div
+                    className="flex items-center gap-3 p-2 hover:bg-default-100 rounded-lg cursor-pointer transition-colors"
+                    onClick={onMuteOpen}
+                  >
+                    <div className="w-8 h-8 rounded-full bg-default-200 flex items-center justify-center shrink-0">
+                      <Icon
+                        icon="solar:bell-off-bold"
+                        className="text-lg text-default-600"
+                      />
+                    </div>
+                    <span className="text-sm font-medium">
+                      {t("muteNotifications")}
+                    </span>
+                  </div>
                 </div>
               </AccordionItem>
               <AccordionItem
@@ -567,6 +588,12 @@ export default function ChatDetail({ chat }: ChatDetailProps) {
       <ChangePhotoModal
         isOpen={isPhotoOpen}
         onOpenChange={onPhotoOpenChange}
+        chatId={chat.id}
+      />
+
+      <MuteChatModal
+        isOpen={isMuteOpen}
+        onOpenChange={onMuteOpenChange}
         chatId={chat.id}
       />
     </>

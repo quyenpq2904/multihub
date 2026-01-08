@@ -73,6 +73,15 @@
     "save": "Save",
     "chatName": "Chat name",
     "typeChatName": "Enter chat name",
-    "choosePhoto": "Choose photo"
+    "choosePhoto": "Choose photo",
+    "muteNotifications": "Mute notifications",
+    "muteChatDesc": "Mute notifications for this conversation",
+    "muteDescription": "The chat window will remain closed and you will not receive push notifications on your devices.",
+    "for15Minutes": "For 15 minutes",
+    "for1Hour": "For 1 hour",
+    "for8Hours": "For 8 hours",
+    "for24Hours": "For 24 hours",
+    "untilITurnItBackOn": "Until I turn it back on",
+    "mute": "Mute notifications"
   }
 }

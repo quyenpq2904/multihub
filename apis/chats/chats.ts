@@ -4,6 +4,7 @@ import {
   IGetMessagesRequest,
   IAddMemberRequest,
   IRemoveMemberRequest,
+  IMuteConversationRequest,
 } from "./chat-req.type";
 import { IChatsResponse, IGetMessagesResponse } from "./chat-res.type";
 import { IChat } from "@/types/Chat";
@@ -53,6 +54,10 @@ const chatsApi = {
         "Content-Type": "multipart/form-data",
       },
     });
+  },
+
+  muteConversation(data: IMuteConversationRequest) {
+    return http.post(`${BaseURL}/mute-conversation`, data);
   },
 };
 

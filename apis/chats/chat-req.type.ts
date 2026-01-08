@@ -20,3 +20,8 @@ export interface IRemoveMemberRequest {
   conversationId: string;
   memberId: string;
 }
+
+export interface IMuteConversationRequest {
+  conversationId: string;
+  duration: string;
+}

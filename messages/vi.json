@@ -73,6 +73,15 @@
     "save": "Lưu",
     "chatName": "Tên đoạn chat",
     "typeChatName": "Nhập tên đoạn chat",
-    "choosePhoto": "Chọn ảnh"
+    "choosePhoto": "Chọn ảnh",
+    "muteNotifications": "Tắt thông báo",
+    "muteChatDesc": "Tắt thông báo về cuộc trò chuyện",
+    "muteDescription": "Cửa sổ chat vẫn đóng và bạn sẽ không nhận được thông báo đẩy trên thiết bị.",
+    "for15Minutes": "Trong 15 phút",
+    "for1Hour": "Trong 1 giờ",
+    "for8Hours": "Trong 8 giờ",
+    "for24Hours": "Trong 24 giờ",
+    "untilITurnItBackOn": "Đến khi tôi bật lại",
+    "mute": "Tắt thông báo"
   }
 }
